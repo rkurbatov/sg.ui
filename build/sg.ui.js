@@ -94,7 +94,7 @@
             setInterval(function () {
                 var colors = ['#ff0000', '#ffa500', '#8b4513', '#008000', '#1e80a0', '#8b008b'];
                 var currentColor = colors[Math.floor(Math.random() * colors.length)];
-                $('.sg-multicolor').animate({color: currentColor}, 1000);
+                elm.animate({color: currentColor}, 1000);
             }, 1000);
         }
     }
