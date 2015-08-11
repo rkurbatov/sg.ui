@@ -5,6 +5,7 @@ var concat = require('gulp-concat');
 var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
 
+var DEST = 'build/';
 
 gulp.task('default', createDeploymentVersion);
 

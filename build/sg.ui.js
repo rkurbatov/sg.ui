@@ -10,7 +10,9 @@
 
     angular
         .module('sg.ui')
-        .directive('sgCarousel', ['$window', sgCarousel]);
+        .directive('sgCarousel', sgCarousel);
+
+    sgCarousel.$inject = ['$window'];
 
     function sgCarousel($window) {
         var ddo = {
@@ -72,6 +74,41 @@
     }
 })();
 
+(function (window, angular, undefined) {
+    'use strict';
+
+    angular
+        .module('sg.ui')
+        .directive('sgLowerCase', sgLowerCase);
+
+    sgLowerCase.$inject = ['$parse'];
+
+    function sgLowerCase($parse) {
+        return {
+            require: 'ngModel',
+            link: link
+        };
+
+        function link(scope, elm, attrs, modelCtrl) {
+            function lowerize(inputValue) {
+                if (!inputValue) {
+                    return inputValue;
+                }
+                var lowerized = inputValue.toLowerCase();
+                if (lowerized !== inputValue) {
+                    modelCtrl.$setViewValue(lowerized);
+                    modelCtrl.$render();
+                }
+                return lowerized;
+            }
+
+            var model = $parse(attrs.ngModel);
+            modelCtrl.$parsers.push(lowerize);
+            lowerize(model(scope));
+        }
+    }
+
+})(window, window.angular);
 (function(){
     'use strict';
 
@@ -528,3 +565,39 @@
     }
 
 })();
+
+(function (window, angular, undefined) {
+    'use strict';
+
+    angular
+        .module('sg.ui')
+        .directive('sgUpperCase', sgUpperCase);
+
+    sgUpperCase.$inject = ['$parse'];
+
+    function sgUpperCase($parse) {
+        return {
+            require: 'ngModel',
+            link: link
+        };
+
+        function link(scope, elm, attrs, modelCtrl) {
+            function upperize(inputValue) {
+                if (!inputValue) {
+                    return inputValue;
+                }
+                var upperized = inputValue.toUpperCase();
+                if (upperized !== inputValue) {
+                    modelCtrl.$setViewValue(upperized);
+                    modelCtrl.$render();
+                }
+                return upperized;
+            }
+
+            var model = $parse(attrs.ngModel);
+            modelCtrl.$parsers.push(upperize);
+            upperize(model(scope));
+        }
+    }
+
+})(window, window.angular);

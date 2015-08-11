@@ -3,7 +3,9 @@
 
     angular
         .module('sg.ui')
-        .directive('sgCarousel', ['$window', sgCarousel]);
+        .directive('sgCarousel', sgCarousel);
+
+    sgCarousel.$inject = ['$window'];
 
     function sgCarousel($window) {
         var ddo = {
