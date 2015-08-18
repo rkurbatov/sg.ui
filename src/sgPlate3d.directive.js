@@ -1,4 +1,4 @@
-(function(){
+(function () {
     'use strict';
 
     angular
@@ -31,16 +31,21 @@
 
             // default events for plate redraw
             if (sgPlate3dOptions.customEvent) {
-                scope.$on(sgPlate3dOptions.customEvent, function(){
-                    scope.$applyAsync(function(){
+                scope.$on(sgPlate3dOptions.customEvent, function () {
+                    scope.$applyAsync(function () {
                         plateRedraw()
                     });
                 });
             }
 
-            scope.$watch(function(){
-                return elm.attr('src');
-            }, plateRedraw);
+            scope.$watch(
+                function () {
+                    return elm.attr('src');
+                },
+                function (src) {
+                    if (src) plateRedraw();
+                }
+            );
 
             if (bound && bound.nodeName === 'IMG') {
                 angular.element(bound).on('load', plateRedraw);
