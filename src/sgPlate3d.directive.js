@@ -29,9 +29,14 @@
         function link(scope, elm, attrs) {
             var bound = angular.element('#' + attrs.for)[0] || angular.element(attrs.for)[0];
 
-            // default evets for plate redraw
-            var eventString = sgPlate3dOptions.customEvent || 'load resize';
-            angular.element($window).on(eventString, plateRedraw);
+            // default events for plate redraw
+            if (sgPlate3dOptions.customEvent) {
+                scope.$on(sgPlate3dOptions.customEvent, function(){
+                    scope.$applyAsync(function(){
+                        plateRedraw()
+                    });
+                });
+            }
 
             scope.$watch(function(){
                 return elm.attr('src');
