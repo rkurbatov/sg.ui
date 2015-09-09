@@ -38,6 +38,16 @@
                 });
             }
 
+            if (bound && bound.nodeName === 'IMG') {
+                angular.element(bound).on('load', plateRedraw);
+            }
+
+            scope.$on('$destroy', function(){
+                if (bound && bound.nodeName === 'IMG') {
+                    angular.element(bound).off('load', plateRedraw);
+                }
+            });
+
             scope.$watch(
                 function () {
                     return elm.attr('src');
@@ -46,10 +56,6 @@
                     if (src) plateRedraw();
                 }
             );
-
-            if (bound && bound.nodeName === 'IMG') {
-                angular.element(bound).on('load', plateRedraw);
-            }
 
             function plateRedraw() {
                 var coords = $parse(attrs.coords)();

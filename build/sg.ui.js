@@ -19,13 +19,16 @@
             link: link
         };
 
-        function link($scope, element) {
-            $scope.initialHeight = $scope.initialHeight || element[0].style.height;
+        function link(scope, element) {
+            scope.initialHeight = scope.initialHeight || element[0].style.height;
             var resize = function () {
-                element[0].style.height = $scope.initialHeight;
+                element[0].style.height = scope.initialHeight;
                 element[0].style.height = "" + element[0].scrollHeight + "px";
             };
             element.on("input change", resize);
+            scope.$on('$destroy', function(){
+                element.off("input change", resize);
+            });
             $timeout(resize, 0);
         }
     }
@@ -113,11 +116,17 @@
 
         function link(scope, elm, attrs) {
             var fn = $parse(attrs.sgOnImgLoad);
-            elm.on('load', function (event) {
-                scope.$apply(function () {
+            elm.on('load', applyFunction);
+
+            scope.$on('$destroy', function(){
+               elm.off('load', applyFunction);
+            });
+
+            function applyFunction(event) {
+                scope.$applyAsync(function () {
                     fn(scope, {$event: event});
                 });
-            });
+            }
         }
     }
 
@@ -164,6 +173,16 @@
                 });
             }
 
+            if (bound && bound.nodeName === 'IMG') {
+                angular.element(bound).on('load', plateRedraw);
+            }
+
+            scope.$on('$destroy', function(){
+                if (bound && bound.nodeName === 'IMG') {
+                    angular.element(bound).off('load', plateRedraw);
+                }
+            });
+
             scope.$watch(
                 function () {
                     return elm.attr('src');
@@ -172,10 +191,6 @@
                     if (src) plateRedraw();
                 }
             );
-
-            if (bound && bound.nodeName === 'IMG') {
-                angular.element(bound).on('load', plateRedraw);
-            }
 
             function plateRedraw() {
                 var coords = $parse(attrs.coords)();
@@ -566,6 +581,49 @@
             var model = $parse(attrs.ngModel);
             modelCtrl.$parsers.push(upperize);
             upperize(model(scope));
+        }
+    }
+
+})(window, window.angular);
+// Directive for setting element size in percents of viewport
+// Used as: <img class='sg-viewport-size' vw='100' vh='20'/>
+(function (window, angular, undefined) {
+    'use strict';
+
+    angular
+        .module('sg.ui')
+        .directive('sgViewportSize', sgViewportSize);
+
+    sgViewportSize.$inject = ['$window'];
+
+    function sgViewportSize($window) {
+
+        return {
+            restrict: 'C',
+            link: link
+        };
+
+        function link(scope, elm, attrs) {
+            console.log(attrs);
+            angular.element($window).on('load resize', setElementSize);
+
+            scope.$on('$destroy', function () {
+                angular.element(window).off('load resize', setElementSize);
+            });
+
+            function setElementSize() {
+                if (attrs.vw && !isNaN(attrs.vw) && attrs.vw >= 0) {
+                    elm.width($window.innerWidth * attrs.vw / 100);
+                } else {
+                    console.error('Bad element width!');
+                }
+
+                if (attrs.vh && !isNaN(attrs.vh) && attrs.vh >= 0) {
+                    elm.height($window.innerHeight * attrs.vh / 100);
+                } else {
+                    console.error('Bad element height!');
+                }
+            }
         }
     }
 

@@ -12,13 +12,16 @@
             link: link
         };
 
-        function link($scope, element) {
-            $scope.initialHeight = $scope.initialHeight || element[0].style.height;
+        function link(scope, element) {
+            scope.initialHeight = scope.initialHeight || element[0].style.height;
             var resize = function () {
-                element[0].style.height = $scope.initialHeight;
+                element[0].style.height = scope.initialHeight;
                 element[0].style.height = "" + element[0].scrollHeight + "px";
             };
             element.on("input change", resize);
+            scope.$on('$destroy', function(){
+                element.off("input change", resize);
+            });
             $timeout(resize, 0);
         }
     }
