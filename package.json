@@ -1,0 +1,25 @@
+{
+  "name": "sg.ui",
+  "version": "0.3.1",
+  "description": "sg.ui - set of useful directives",
+  "main": "''",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rkurbatov/sg.ui.git"
+  },
+  "author": "Roman Kurbatov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rkurbatov/sg.ui/issues"
+  },
+  "homepage": "https://github.com/rkurbatov/sg.ui#readme",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.4.0"
+  }
+}

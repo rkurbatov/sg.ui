@@ -604,7 +604,6 @@
         };
 
         function link(scope, elm, attrs) {
-            console.log(attrs);
             angular.element($window).on('load resize', setElementSize);
 
             scope.$on('$destroy', function () {
