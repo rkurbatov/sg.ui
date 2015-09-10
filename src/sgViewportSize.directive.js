@@ -26,13 +26,13 @@
             function setElementSize() {
                 if (attrs.vw && !isNaN(attrs.vw) && attrs.vw >= 0) {
                     elm.width($window.innerWidth * attrs.vw / 100);
-                } else {
+                } else if (attrs.vw && String(attrs.vw).toLowerCase() !== 'none') {
                     console.error('Bad element width!');
                 }
 
                 if (attrs.vh && !isNaN(attrs.vh) && attrs.vh >= 0) {
                     elm.height($window.innerHeight * attrs.vh / 100);
-                } else {
+                } else if (attrs.vh && String(attrs.vh).toLowerCase() !== 'none') {
                     console.error('Bad element height!');
                 }
             }
