@@ -32,7 +32,7 @@ function build() {
 }
 
 function commit(){
-    return gulp.src('./build/**/*')
+    return gulp.src('./dist/*')
         .pipe(git.commit('Dist files for version ' + version))
         .pipe(git.pull())
 }
