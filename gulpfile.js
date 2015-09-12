@@ -30,13 +30,14 @@ function build() {
         .pipe(gulp.dest(DEST));
 }
 
-function release(){
+function release() {
     return gulp.src('./*')
         .pipe(excludeGitignore())
+        .pipe(git.add())
         .pipe(git.commit('Dist files for version ' + version))
-        .on('end', function(){
-            git.tag('v' + version, 'Release + version', function(err){
-               if (err) throw err;
+        .on('end', function () {
+            git.tag('v' + version, 'Release + version', function (err) {
+                if (err) throw err;
                 git.push('origin', 'master', {args: '--tags'});
             });
         });
