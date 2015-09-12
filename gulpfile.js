@@ -38,7 +38,7 @@ function release() {
             if (err) throw err;
         })
         .on('end', function () {
-            git.tag('v' + version, 'Release + version', function (err) {
+            git.tag('v' + version, 'Release' + version, function (err) {
                 if (err) throw err;
                 git.push('origin', 'master', {args: '--tags'});
             });
