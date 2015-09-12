@@ -58,8 +58,6 @@ function pushTags() {
 
 function bumpVersion(bumpType) {
     return function () {
-        var version = null;
-
         gulp.src('./package.json')
             .pipe(bump({type: bumpType}))
             .pipe(gulp.dest('./'))
