@@ -11,15 +11,16 @@ var uglify = require('gulp-uglify');
 var DEST = 'dist/';
 var version = require('./package.json').version;
 
-gulp.task('default', build);
+gulp.task('default', deployBuild);
+gulp.task('deploy', ['deploy:build', 'deploy:commit']);
 gulp.task('bumpMajor', bumpVersion('major'));
 gulp.task('bumpMinor', bumpVersion('minor'));
 gulp.task('bumpPatch', bumpVersion('patch'));
-gulp.task('release', release);
-gulp.task('build', build);
+gulp.task('deploy:build', deployBuild);
+gulp.task('deploy:commit', deployCommit);
 
 
-function build() {
+function deployBuild() {
     return gulp.src(['src/sg.ui.js', 'src/*.js'])
         .pipe(concat('sg.ui.js'))
         // This will output the non-minified version
@@ -30,17 +31,17 @@ function build() {
         .pipe(gulp.dest(DEST));
 }
 
-function release() {
+function deployCommit() {
     return gulp.src('./*')
         .pipe(excludeGitignore())
         .pipe(git.add())
-        .pipe(git.commit('Dist files for version ' + version))
-        .on('end', function () {
+        .pipe(git.commit('Dist files for version ' + version));
+        /*.on('end', function () {
             git.tag('v' + version, 'Release ' + version, function (err) {
                 if (err) throw err;
                 git.push('origin', 'master', {args: '--tags'});
             });
-        });
+        });*/
 }
 
 function bumpVersion(bumpType) {
