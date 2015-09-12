@@ -14,10 +14,11 @@ gulp.task('default', build);
 gulp.task('bumpMajor', bumpVersion('major'));
 gulp.task('bumpMinor', bumpVersion('minor'));
 gulp.task('bumpPatch', bumpVersion('patch'));
-gulp.task('pushRelease', ['tagRelease'], pushRelease);
+gulp.task('pushRelease', ['pushTags'], pushRelease);
 gulp.task('build', build);
 gulp.task('commit', ['build'], commit);
 gulp.task('tagRelease', ['commit'], tagRelease);
+gulp.task('pushTags', ['tagRelease'], pushTags);
 
 
 function build() {
@@ -38,15 +39,18 @@ function commit(){
 }
 
 function tagRelease() {
-    git.tag('v'+ version, 'Tagging version '+ version, function(err){
+    return git.tag('v'+ version, 'Tagging version '+ version, function(err){
         if (err) throw err;
     });
 }
 
 function pushRelease() {
-    git.push('origin', 'master', function(err){
+    return git.push('origin', 'master', function(err){
         if(err) throw err;
     });
+}
+
+function pushTags() {
     git.push('origin', 'master', {args: '--tags'}, function(err){
         if (err) throw err;
     });
