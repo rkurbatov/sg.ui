@@ -1,6 +1,6 @@
 {
   "name": "sg.ui",
-  "version": "0.5.3",
+  "version": "0.4.3",
   "description": "sg.ui - set of useful directives",
   "main": "''",
   "scripts": {
