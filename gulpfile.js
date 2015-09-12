@@ -19,7 +19,6 @@ gulp.task('bumpPatch', bumpVersion('patch'));
 gulp.task('deploy:build', deployBuild);
 gulp.task('deploy:commit', deployCommit);
 
-
 function deployBuild() {
     return gulp.src(['src/sg.ui.js', 'src/*.js'])
         .pipe(concat('sg.ui.js'))
