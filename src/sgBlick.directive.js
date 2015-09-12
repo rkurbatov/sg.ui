@@ -4,6 +4,7 @@
 // speed (200) - speed in pxs per second
 // interval (10) - interval between blicks, seconds
 // random (0) - random deviation border number for intervals, seconds
+// blickClass (".sg-is-blicking") - class to set at blicking time
 (function (window, angular, undefined) {
     'use strict';
 
@@ -27,6 +28,7 @@
             var random = attrs.random
                 ? (attrs.random === '' ? 1 : attrs.random)
                 : 0;
+            var blickClass = attrs.blickClass || ".sg-is-blicking";
             var duration;
 
             var elmWidth = 0;
@@ -60,10 +62,10 @@
             $timeout($interval(cbBlick, rndInterval), delay);
 
             function cbBlick() {
-                // set style to 'hovered' for
-                elm.toggleClass('sg-blick');
+                // set style to '.sg-is-blicking' for
+                elm.toggleClass(blickClass);
                 setTimeout(function () {
-                    elm.toggleClass('sg-blick')
+                    elm.toggleClass(blickClass);
                 }, Number(duration * 1000));
             }
         }
