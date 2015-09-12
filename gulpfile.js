@@ -34,12 +34,7 @@ function release() {
     return gulp.src('./*')
         .pipe(excludeGitignore())
         .pipe(git.add())
-        .pipe(git.commit('Dist files for version ' + version), function(err){
-            if (err) {
-                process.stdout.write(err);
-                throw err;
-            }
-        })
+        .pipe(git.commit('Dist files for version ' + version))
         .on('end', function () {
             git.tag('v' + version, 'Release ' + version, function (err) {
                 if (err) throw err;
