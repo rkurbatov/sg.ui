@@ -33,19 +33,19 @@ function build() {
 }
 
 function commit(){
-    return gulp.src('./dist/*')
+    gulp.src('./dist/*')
         .pipe(git.commit('Dist files for version ' + version))
         .pipe(git.pull())
 }
 
 function tagRelease() {
-    return git.tag('v'+ version, 'Tagging version '+ version, function(err){
+    git.tag('v'+ version, 'Tagging version '+ version, function(err){
         if (err) throw err;
     });
 }
 
 function pushRelease() {
-    return git.push('origin', 'master', function(err){
+    git.push('origin', 'master', function(err){
         if(err) throw err;
     });
 }
