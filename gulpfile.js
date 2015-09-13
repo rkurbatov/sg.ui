@@ -33,11 +33,12 @@ function deployBuild() {
 function deployCommit() {
     return gulp.src('./*')
         .pipe(excludeGitignore())
-        .pipe(git.commit('Dist files for version ' + version));
-        //.pipe(git.add())
-        /*.on('end', function(){
-            git.commit('Dist files for version ' + version);
-        });*/
+        .pipe(git.add())
+        .on('end', function(){
+            return gulp.src('./*')
+                .pipe(excludeGitignore())
+                .pipe(git.commit('Dist files for version ' + version));
+        });
         /*.pipe(git.commit('Dist files for version ' + version))
         .on('end', function () {
             git.tag('v' + version, 'Release ' + version, function (err) {
