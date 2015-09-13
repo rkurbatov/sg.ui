@@ -12,12 +12,11 @@ var DEST = 'dist/';
 var version = require('./package.json').version;
 
 gulp.task('default', deployBuild);
-gulp.task('deploy', ['deploy:build', 'deploy:commit']);
+gulp.task('release', ['deploy:build'], deployRelease);
 gulp.task('bumpMajor', bumpVersion('major'));
 gulp.task('bumpMinor', bumpVersion('minor'));
 gulp.task('bumpPatch', bumpVersion('patch'));
 gulp.task('deploy:build', deployBuild);
-gulp.task('deploy:commit', deployCommit);
 
 function deployBuild() {
     return gulp.src(['src/sg.ui.js', 'src/*.js'])
@@ -30,7 +29,7 @@ function deployBuild() {
         .pipe(gulp.dest(DEST));
 }
 
-function deployCommit() {
+function deployRelease() {
     return gulp.src('./*')
         .pipe(excludeGitignore())
         .pipe(git.add())
