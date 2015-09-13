@@ -39,6 +39,7 @@ function deployCommit() {
                 .pipe(excludeGitignore())
                 .pipe(git.commit('Dist files for version ' + version));
         });
+
         /*.pipe(git.commit('Dist files for version ' + version))
         .on('end', function () {
             git.tag('v' + version, 'Release ' + version, function (err) {
