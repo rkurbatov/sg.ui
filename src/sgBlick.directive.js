@@ -17,7 +17,7 @@
     function sgBlick($window, $timeout, $interval) {
 
         return {
-            restrict: 'A',
+            restrict: 'ACE',
             link: link
         };
 
