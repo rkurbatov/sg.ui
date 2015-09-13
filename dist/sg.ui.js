@@ -35,7 +35,7 @@
             var random = attrs.random
                 ? (attrs.random === '' ? 1 : attrs.random)
                 : 0;
-            var blickClass = attrs.blickClass || ".sg-is-blicking";
+            var blickClass = attrs.blickClass || "sg-is-blicking";
             var duration;
 
             var elmWidth = 0;
