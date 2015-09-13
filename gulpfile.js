@@ -37,15 +37,15 @@ function deployCommit() {
         .on('end', function(){
             return gulp.src('./*')
                 .pipe(excludeGitignore())
-                .pipe(git.commit('Dist files for version ' + version));
+                .pipe(git.commit('Dist files for version ' + version))
+                .on('end', function () {
+                    git.tag('v' + version, 'Release ' + version, function (err) {
+                        if (err) throw err;
+                        git.push('origin', 'master', {args: '--tags'});
+                    });
+                });
         });
-        /*.pipe(git.commit('Dist files for version ' + version))
-        .on('end', function () {
-            git.tag('v' + version, 'Release ' + version, function (err) {
-                if (err) throw err;
-                git.push('origin', 'master', {args: '--tags'});
-            });
-        });*/
+
 }
 
 function bumpVersion(bumpType) {
