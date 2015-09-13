@@ -34,13 +34,13 @@ function deployCommit() {
     return gulp.src('./*')
         .pipe(excludeGitignore())
         .pipe(git.add())
-        .pipe(git.commit('Dist files for version ' + version));
-        /*.on('end', function () {
+        .pipe(git.commit('Dist files for version ' + version))
+        .on('end', function () {
             git.tag('v' + version, 'Release ' + version, function (err) {
                 if (err) throw err;
                 git.push('origin', 'master', {args: '--tags'});
             });
-        });*/
+        });
 }
 
 function bumpVersion(bumpType) {
