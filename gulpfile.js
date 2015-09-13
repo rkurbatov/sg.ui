@@ -8,8 +8,8 @@ var concat = require('gulp-concat');
 var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
 
-var version = require('./package.json').version;
 var DEST = 'dist/';
+var version = require('./package.json').version;
 
 gulp.task('default', deployBuild);
 gulp.task('deploy', ['deploy:build', 'deploy:commit']);
