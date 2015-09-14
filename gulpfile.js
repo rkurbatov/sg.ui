@@ -1,46 +1,41 @@
 'use strict';
 
-var gulp = require('gulp');
-var bump = require('gulp-bump');
-var git = require('gulp-git');
-var excludeGitignore = require('gulp-exclude-gitignore');
-var concat = require('gulp-concat');
-var rename = require('gulp-rename');
-var uglify = require('gulp-uglify');
+var Gulp = require('gulp');
+var gulp = require('gulp-load-plugins')();
 
 var DEST = 'dist/';
 var version = require('./package.json').version;
 
-gulp.task('default', deployBuild);
-gulp.task('release', ['deploy:build'], deployRelease);
-gulp.task('bumpMajor', bumpVersion('major'));
-gulp.task('bumpMinor', bumpVersion('minor'));
-gulp.task('bumpPatch', bumpVersion('patch'));
-gulp.task('deploy:build', deployBuild);
+Gulp.task('default', deployBuild);
+Gulp.task('release', ['deploy:build'], deployRelease);
+Gulp.task('bumpMajor', bumpVersion('major'));
+Gulp.task('bumpMinor', bumpVersion('minor'));
+Gulp.task('bumpPatch', bumpVersion('patch'));
+Gulp.task('deploy:build', deployBuild);
 
 function deployBuild() {
-    return gulp.src(['src/sg.ui.js', 'src/*.js'])
-        .pipe(concat('sg.ui.js'))
+    return Gulp.src(['src/sg.ui.js', 'src/*.js'])
+        .pipe(gulp.concat('sg.ui.js'))
         // This will output the non-minified version
-        .pipe(gulp.dest(DEST))
+        .pipe(Gulp.dest(DEST))
         // This will minify and rename to foo.min.js
-        .pipe(uglify())
-        .pipe(rename({extname: '.min.js'}))
-        .pipe(gulp.dest(DEST));
+        .pipe(gulp.uglify())
+        .pipe(gulp.rename({extname: '.min.js'}))
+        .pipe(Gulp.dest(DEST));
 }
 
 function deployRelease() {
-    return gulp.src('./*')
-        .pipe(excludeGitignore())
-        .pipe(git.add())
+    return Gulp.src('./*')
+        .pipe(gulp.excludeGitignore())
+        .pipe(gulp.git.add())
         .on('end', function(){
-            return gulp.src('./*')
-                .pipe(excludeGitignore())
-                .pipe(git.commit('Dist files for version ' + version))
+            return Gulp.src('./*')
+                .pipe(gulp.excludeGitignore())
+                .pipe(gulp.git.commit('Dist files for version ' + version))
                 .on('end', function () {
-                    git.tag('v' + version, 'Release ' + version, function (err) {
+                    gulp.git.tag('v' + version, 'Release ' + version, function (err) {
                         if (err) throw err;
-                        git.push('origin', 'master', {args: '--tags'});
+                        gulp.git.push('origin', 'master', {args: '--tags'});
                     });
                 });
         });
@@ -49,9 +44,9 @@ function deployRelease() {
 
 function bumpVersion(bumpType) {
     return function () {
-        gulp.src('./package.json')
-            .pipe(bump({type: bumpType}))
-            .pipe(gulp.dest('./'))
-            .pipe(git.commit("Bump package version"));
+        Gulp.src('./package.json')
+            .pipe(gulp.bump({type: bumpType}))
+            .pipe(Gulp.dest('./'))
+            .pipe(gulp.git.commit("Bump package version"));
     }
 }
