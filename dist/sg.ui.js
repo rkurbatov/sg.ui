@@ -192,7 +192,7 @@
             var fn = $parse(attrs.sgOnImgError);
             elm.on('error', applyFunction);
 
-            scope.$on('$destroy', function(){
+            scope.$on('$destroy', function () {
                 elm.off('error', applyFunction);
             });
 
